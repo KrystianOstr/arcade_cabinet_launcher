@@ -3,7 +3,7 @@ import pygame as py
 class Menu():
     def __init__(self):
         # self.menu_options = (["NES", "SNES", "NEOGEO"])
-        self.menu_options = (["Notepad","CMD", "VSC" ])
+        self.menu_options = (["Super Mario Bros","Kid Icarus", "Contra","Duck Tales" ])
         self.selected_index = 0
         self.font = py.font.Font('assets/graphics/subatomic.ttf', 48)
 

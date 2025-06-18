@@ -9,11 +9,12 @@ class ArcadeApp():
         py.display.set_caption("Arcade Cabinet Manager")
         self.running = True
         self.menu = Menu()
+        self.NES = r"C:\Emu\fceux\fceux64.exe"
         self.program_map = {
-            "Notepad++": r"C:\Program Files\Notepad++\notepad++.exe",
-            "CMD": "start cmd",
-            "VSC": r"C:\Users\MLGCS\AppData\Local\Programs\Microsoft VS Code\Code.exe"
-
+            "Super Mario Bros": {"cmd": [self.NES,r"C:\Emu\fceux\roms\Super Mario Bros.nes" ], "shell": False},
+            "Kid Icarus": {"cmd": [self.NES,r"C:\Emu\fceux\roms\Kid Icarus.nes" ], "shell": False},
+            "Contra": {"cmd": [self.NES,r"C:\Emu\fceux\roms\Contra.nes" ], "shell": False},
+            "Duck Tales": {"cmd": [self.NES,r"C:\Emu\fceux\roms\Duck Tales.nes" ], "shell": False},
         }
 
     def run(self):
@@ -33,7 +34,7 @@ class ArcadeApp():
                         self.quit()
                     if event.key == py.K_DOWN:
                         self.menu.selected_index+=1
-                        if self.menu.selected_index == 3:
+                        if self.menu.selected_index == len(self.menu.menu_options):
                             self.menu.selected_index = 0
 
                     if event.key == py.K_UP:
@@ -42,10 +43,15 @@ class ArcadeApp():
                             self.menu.selected_index = 2
                     if event.key == py.K_RETURN:
                         selected_console = self.menu.menu_options[self.menu.selected_index]
-                        command = self.program_map.get(selected_console)
-                        if command:
-                            subprocess.Popen(command, shell=True)
-                            self.quit()
+                        entry = self.program_map.get(selected_console)
+
+                        if entry:
+                            try:
+                                print(f"[INFO] Uruchamiam: {entry['cmd']} | shell={entry['shell']}")
+                                subprocess.Popen(entry["cmd"], shell=entry["shell"])
+                            except Exception as e:
+                                print(f"[BŁĄD] Nie udało się uruchomić: {e}")
+
 
     def quit(self):
         self.running = False
